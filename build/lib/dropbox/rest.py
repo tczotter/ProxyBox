@@ -70,7 +70,6 @@ class RESTClient(object):
             # doesn't handle file-like objects as HTTP bodies and
             # thus requires manual buffering
             if not hasattr(body, 'read'):
-                ##conn.request(method, url, body, headers)
                 req = urllib2.Request(url , data=body , headers=headers)
             else:
 
@@ -129,7 +128,12 @@ class RESTClient(object):
 			r = urllib2.urlopen(req)
 
 			if raw_response:
-				return r.read()
+				print url
+				if url == "https://api.dropbox.com/1/oauth/request_token" or url == "https://api.dropbox.com/1/oauth/access_token":
+					print 'Token Access'
+					return r
+				else:
+					return r.read()
 			else:
 				try:
 					resp = json.loads(r.read())
